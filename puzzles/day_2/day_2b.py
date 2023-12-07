@@ -1,31 +1,22 @@
 import string
 import re
-import numpy
+import numpy as np
 
 class Day2b:
-    def __init__(self):
-        with open("puzzles/day_2/inputs.txt", "r") as file:
+    def __init__(self, input_file="puzzles/day_2/inputs.txt"):
+        with open(input_file, "r") as file:
             self.games = file.readlines()
 
     def solve(self):
-        result = (sum(num for num in self.__cube_powers()))
+        result = sum(self.__find_game_cube_power(self.__format_game(game)) for game in self.games)
         print(result)
         return(result)
 
-    def __cube_powers(self):
-        cube_powers = []
-
-        for game in self.games:
-            formatted_game = self.__format_game(game)
-            cube_powers.append(self.__find_game_cube_power(formatted_game))
-
-        return cube_powers
-
     def __format_game(self, game):
-        split_game = game.translate(str.maketrans('', '', string.punctuation))
-        split_game = re.sub('\n', '', split_game).split(' ')
+        cleaned_game = game.translate(str.maketrans('', '', string.punctuation))
+        cleaned_game = re.sub('\n', '', cleaned_game).split(' ')
 
-        return [split_game[i:i + 2] for i in range(0, len(split_game), 2)]
+        return [cleaned_game[i:i + 2] for i in range(0, len(cleaned_game), 2)]
 
     def __find_game_cube_power(self, game):
         game_summary = {
@@ -34,12 +25,10 @@ class Day2b:
             "blue": 0
         }
 
-        for cube_value, colour in game:
-            if colour in game_summary.keys():
-                if int(cube_value) > game_summary[colour]:
-                    game_summary[colour] = int(cube_value)
+        for cube_value, colour in game[1:]:
+            game_summary[colour] = max(game_summary[colour], int(cube_value))
 
-        return numpy.prod([*game_summary.values()])
+        return np.prod([*game_summary.values()])
 
 
 Day2b().solve()

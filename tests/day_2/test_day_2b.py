@@ -6,12 +6,6 @@ class TestDay2b:
         result = Day2b.Day2b().solve()
         assert result == 56322
 
-    def test_cube_powers(self):
-        # This requires a fixture
-        # result = Day2b.Day2b()._Day2b__cube_powers()
-        # assert result == []
-        pass
-
     def test_format_game(self):
         result = Day2b.Day2b()._Day2b__format_game('Game 1: 5 red, 6 green, 7 blue; 4 green, 3 blue; 2 red')
         assert result == [

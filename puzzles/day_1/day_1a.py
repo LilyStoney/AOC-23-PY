@@ -1,8 +1,8 @@
 import re
 
 class Day1a:
-    def __init__(self):
-        with open("puzzles/day_1/inputs.txt", "r") as file:
+    def __init__(self, input_file="puzzles/day_1/inputs.txt"):
+        with open(input_file, "r") as file:
             self.strings = file.readlines()
 
     def solve(self):
