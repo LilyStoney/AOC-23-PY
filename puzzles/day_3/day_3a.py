@@ -6,7 +6,7 @@ class Day3a:
             self.schematic = file.readlines()
 
     def solve(self):
-        result = (sum(num for num in self.__calculate_parts()))
+        result = (sum(self.__calculate_parts()))
         print(result)
         return(result)
 
@@ -17,16 +17,7 @@ class Day3a:
             for match in re.finditer(r"\d+", line):
                 char_range = self.__format_match(match)
                 row_range  = self.__row_range(idx)
-                characters = []
-
-                for row in row_range:
-                    line = re.sub('\n', '', self.schematic[row])
-
-                    for num in char_range:
-                        if num == 140:
-                            continue
-                        else:
-                            characters.append(line[num])
+                characters = [self.schematic[row_index].rstrip()[char_position] for row_index in row_range for char_position in char_range]
 
                 for char in characters:
                     if re.match(r"[^a-zA-Z0-9.]", char):
@@ -38,26 +29,16 @@ class Day3a:
 
 
     def __format_match(self, match):
-        start      = match.start() - 1
-        finish     = match.end()
-        char_range = range(start, finish)
+        start  = max(match.start() - 1, 0)
+        finish = min(match.end(), 139)
 
-        return(char_range)
+        return list(range(start, finish + 1))
 
     def __row_range(self, idx):
-        if idx > 0:
-            starting_row = (idx - 1)
-        else:
-            starting_row = (idx)
+        starting_row = max(idx - 1, 0)
+        ending_row   = min(idx + 1, 139)
 
-        if idx == 140:
-            ending_row = idx
-        else:
-            ending_row = (idx + 1)
-
-        row_range = range(starting_row, ending_row)
-
-        return(row_range)
+        return list(range(starting_row, ending_row + 1))
 
 
 Day3a().solve()
